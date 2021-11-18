@@ -1,0 +1,197 @@
+<!--
+  Copyright (c) 2016 Qualcomm Technologies, Inc.
+  All Rights Reserved.
+  Confidential and Proprietary - Qualcomm Technologies, Inc.
+-->
+
+<!--
+CommonChromatixInfo:
+	CommonChromatixInfo is the information about chromatix needed for
+		various use cases.
+	Ex:- Preview, Snapshot, ZSL, HFR, HDR, Video, Liveshot for ISP, CPP,
+		3A and SW PostProc.
+	Entries in this node are common for all sensor modes.
+
+ResolutionChromatixInfo:
+	ResolutionChromatixInfo is the information about chromatix needed for
+		various use cases.
+	Ex:- Preview, Snapshot, ZSL, HFR, HDR, Video, Liveshot for ISP, CPP,
+		3A and SW PostProc.
+	Entries in this node are specific to sensor resolution.
+
+ChromatixName:
+	Contains the list of chromatix names for all modules.
+	special_mode_mask:
+		It is the bit mask for special modes, which is used for
+			chromatix selection.
+		Special modes can be any mode that needs a special chromatix.
+		Ex:- scene mode, DZOOM mode, OIS capture mode, flash mode
+		This is applicable for CommonChromatixInfo and
+			ResolutionChromatixInfo.
+		special_mode_mask="0" means none of the special modes are
+			selected.
+	sensor_resolution_index:
+		It is the sensor resolution index for which chromatix libraries
+			will be choosen.
+		It is applicable only in ResolutionChromatixInfo.
+
+ISPCommon :
+	Common tuning library name for ISP
+ISPPreview :
+	Preview tuning library name for ISP
+ISPSnapshot :
+	Snapshot tuning library name for ISP
+CPPCommon :
+	Common tuning library name for CPP
+CPPPreview :
+	Preview tuning library name for CPP
+CPPSnapshot :
+	Snapshot tuning library name for CPP
+CPPLiveshot :
+	Liveshot tuning library name for CPP
+PostProc :
+	Tuning library name for postproc module
+A3Preview :
+	Preview tuning library for 3A
+A3Video :
+	Video tuning library for 3A
+
+Order of Resolution Pick:
+	Assume the current sensor mode is "r" and special mode mask is "s".
+	Chromatix for a module and type is choosen in this order till we find a
+		valid chroamtix file name or else NULL is returned.
+	1) From ResolutionChromatixInfo node for which sensor_resolution_index
+		is "r" and special_mode_mask is "s".
+	2) From CommonChromatixInfo node for which special_mode_mask is "s".
+	3) From ResolutionChromatixInfo node for which sensor_resolution_index
+		is "r" and special_mode_mask is "0".
+	4) From CommonChromatixInfo node for which special_mode_mask is "0".
+	5) NULL is returned if we dont find in any of the above cases.
+
+special_mode_mask values:
+	SENSOR_SPECIAL_MODE_NONE = 0,
+	SENSOR_SPECIAL_MODE_FLASH = 1,
+	SENSOR_SPECIAL_MODE_ZOOM_UPSCALE = 2,
+	SENSOR_SPECIAL_MODE_ZOOM_DOWNSCALE = 4,
+	SENSOR_SPECIAL_MODE_OIS_CAPTURE = 8,
+-->
+<!-- HS60 code for HS60-46 by xuxianwei at 20190904 start -->
+<ChromatixConfigurationRoot>
+  <CommonChromatixInfo>
+    <ChromatixName special_mode_mask="0">
+      <PostProc>hi1336_postproc</PostProc>
+    </ChromatixName>
+    <ChromatixName special_mode_mask = "ZOOM_UPSCALE">
+      <CPPSnapshot>hi1336_cpp_snapshot_upscale</CPPSnapshot>
+    </ChromatixName>
+    <ChromatixName special_mode_mask = "ZOOM_DOWNSCALE">
+      <CPPSnapshot>hi1336_cpp_snapshot_downscale</CPPSnapshot>
+    </ChromatixName>
+  </CommonChromatixInfo>
+  <ResolutionChromatixInfo>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_snapshot</ISPPreview>
+      <ISPSnapshot>hi1336_snapshot</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_preview</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_snapshot</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_liveshot</CPPLiveshot>
+      <A3Preview>hi1336_fullsize_preview_3a</A3Preview>
+      <A3Video>hi1336_fullsize_video_3a</A3Video>
+      <BeautyISPPreview>hi1336_beauty_preview</BeautyISPPreview>
+      <BeautyISPSnapshot>hi1336_beauty_snapshot</BeautyISPSnapshot>
+      <BeautyISPVideo>hi1336_beauty_default_video</BeautyISPVideo>
+      <BeautyCPPPreview>hi1336_beauty_cpp_preview</BeautyCPPPreview>
+      <BeautyCPPSnapshot>hi1336_beauty_cpp_snapshot</BeautyCPPSnapshot>
+      <BeautyCPPVideo>hi1336_beauty_cpp_video</BeautyCPPVideo>
+      <BeautyCPPLiveshot>hi1336_beauty_cpp_liveshot</BeautyCPPLiveshot>
+      <BeautyA3Preview>hi1336_beauty_fullsize_preview_3a</BeautyA3Preview>
+      <BeautyA3Video>hi1336_beauty_fullsize_video_3a</BeautyA3Video>
+      <BeautyISPCommon>hi1336_beauty_common</BeautyISPCommon>
+      <PanoramaISPPreview>hi1336_parma_preview</PanoramaISPPreview>
+      <PanoramaISPSnapshot>hi1336_parma_snapshot</PanoramaISPSnapshot>
+      <PanoramaISPVideo>hi1336_parma_default_video</PanoramaISPVideo>
+      <PanoramaCPPPreview>hi1336_parma_cpp_preview</PanoramaCPPPreview>
+      <PanoramaCPPSnapshot>hi1336_parma_cpp_snapshot</PanoramaCPPSnapshot>
+      <PanoramaCPPVideo>hi1336_parma_cpp_video</PanoramaCPPVideo>
+      <PanoramaCPPLiveshot>hi1336_parma_cpp_liveshot</PanoramaCPPLiveshot>
+      <PanoramaA3Preview>hi1336_parma_fullsize_preview_3a</PanoramaA3Preview>
+      <PanoramaA3Video>hi1336_parma_fullsize_video_3a</PanoramaA3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_bokeh</ISPPreview>
+      <ISPSnapshot>hi1336_bokeh</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_bokeh</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_bokeh</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_liveshot</CPPLiveshot>
+      <A3Preview>hi1336_bokeh_3a</A3Preview>
+      <A3Video>hi1336_fullsize_video_3a</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="2" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_snapshot</ISPPreview>
+      <ISPSnapshot>hi1336_snapshot</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_preview</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_snapshot</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_liveshot</CPPLiveshot>
+      <A3Preview>hi1336_fullsize_preview_3a</A3Preview>
+      <A3Video>hi1336_fullsize_video_3a</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="3" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_snapshot</ISPPreview>
+      <ISPSnapshot>hi1336_snapshot</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_preview</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_snapshot</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_liveshot</CPPLiveshot>
+      <A3Preview>hi1336_fullsize_preview_3a</A3Preview>
+      <A3Video>hi1336_fullsize_video_3a</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="4" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_snapshot</ISPPreview>
+      <ISPSnapshot>hi1336_snapshot</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_preview</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_snapshot</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_liveshot</CPPLiveshot>
+      <A3Preview>hi1336_fullsize_preview_3a</A3Preview>
+      <A3Video>hi1336_fullsize_video_3a</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="5" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_snapshot_hdr</ISPPreview>
+      <ISPSnapshot>hi1336_snapshot_hdr</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_snapshot_hdr</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_snapshot_hdr</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_snapshot_hdr</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_snapshot_hdr</CPPLiveshot>
+      <A3Preview>hi1336_hdr_snapshot_3a</A3Preview>
+      <A3Video>hi1336_hdr_snapshot_3a</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="6" special_mode_mask="0">
+      <ISPCommon>hi1336_common</ISPCommon>
+      <ISPPreview>hi1336_video_hdr</ISPPreview>
+      <ISPSnapshot>hi1336_video_hdr</ISPSnapshot>
+      <ISPVideo>hi1336_default_video</ISPVideo>
+      <CPPPreview>hi1336_cpp_video_hdr</CPPPreview>
+      <CPPSnapshot>hi1336_cpp_video_hdr</CPPSnapshot>
+      <CPPVideo>hi1336_cpp_video_hdr</CPPVideo>
+      <CPPLiveshot>hi1336_cpp_video_hdr</CPPLiveshot>
+      <A3Preview>hi1336_hdr_video_3a</A3Preview>
+      <A3Video>hi1336_hdr_video_3a</A3Video>
+    </ChromatixName>
+  </ResolutionChromatixInfo>
+</ChromatixConfigurationRoot>
+<!-- HS60 code for HS60-46 by xuxianwei at 20190904 end -->
